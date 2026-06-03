@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    @apply bg-surface-950 text-surface-100 font-sans antialiased;
+    min-height: 100vh;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-surface-900;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-surface-700 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-surface-600;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-surface-900/60 backdrop-blur-xl border border-surface-800/50 rounded-2xl;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.03),
+      0 4px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300;
+  }
+
+  .glass-card-hover:hover {
+    @apply border-brand-500/30 shadow-lg shadow-brand-500/5;
+    transform: translateY(-2px);
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #818cf8, #6366f1, #a78bfa);
+  }
+
+  .stat-card {
+    @apply glass-card p-6 flex flex-col gap-2;
+  }
+
+  .skeleton {
+    @apply bg-surface-800 rounded-lg animate-shimmer;
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.04) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-reddit {
+    @apply bg-orange-500/15 text-orange-400 border border-orange-500/20;
+  }
+
+  .badge-hn {
+    @apply bg-amber-500/15 text-amber-400 border border-amber-500/20;
+  }
+
+  .badge-github {
+    @apply bg-slate-500/15 text-slate-300 border border-slate-500/20;
+  }
+
+  .sentiment-dot {
+    @apply w-2.5 h-2.5 rounded-full inline-block;
+  }
+
+  .sentiment-positive {
+    @apply bg-emerald-400 shadow-sm shadow-emerald-400/50;
+  }
+
+  .sentiment-negative {
+    @apply bg-rose-400 shadow-sm shadow-rose-400/50;
+  }
+
+  .sentiment-neutral {
+    @apply bg-slate-400;
+  }
+
+  .filter-btn {
+    @apply px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200
+           border border-surface-700/50 text-surface-300 hover:text-surface-100
+           hover:border-surface-600;
+  }
+
+  .filter-btn-active {
+    @apply bg-brand-600/20 border-brand-500/40 text-brand-300 shadow-sm shadow-brand-500/10;
+  }
+
+  .error-banner {
+    @apply bg-rose-500/10 border border-rose-500/30 text-rose-300 rounded-xl p-4
+           flex items-center gap-3;
+  }
+
+  .keyword-pill {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+           bg-brand-500/10 text-brand-300 border border-brand-500/20;
+  }
+}
+
+@layer utilities {
+  .text-gradient-brand {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #818cf8, #c084fc);
+  }
+}
