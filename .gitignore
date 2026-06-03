@@ -31,3 +31,7 @@ docker-compose.override.yml
 
 # spaCy models (downloaded at build time)
 en_core_web_sm*/
+
+# Agent instructions (not part of source)
+Agents.md
+prompt.md

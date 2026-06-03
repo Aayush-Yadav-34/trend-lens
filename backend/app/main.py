@@ -137,7 +137,7 @@ async def health_check() -> dict:
     try:
         redis_client = aioredis.from_url(settings.REDIS_URL)
         await redis_client.ping()
-        await redis_client.aclose()
+        await redis_client.close()
         health["redis"] = "ok"
     except Exception as e:
         health["redis"] = f"error: {str(e)}"
@@ -145,3 +145,27 @@ async def health_check() -> dict:
         logger.error("Health check: Redis failed — %s", e)
 
     return health
+
+
+@app.post("/api/trigger-scrape", tags=["Admin"])
+async def trigger_scrape() -> dict:
+    """
+    Manually trigger a scrape + NLP pipeline run.
+
+    Useful for initial data population without waiting for the scheduler.
+    """
+    import asyncio
+    from app.scheduler import scrape_and_save
+    from app.cluster import run_full_pipeline
+    from app.database import async_session_factory
+
+    logger.info("Manual scrape triggered")
+
+    # Run scrape
+    await scrape_and_save()
+
+    # Run NLP pipeline
+    async with async_session_factory() as session:
+        await run_full_pipeline(session)
+
+    return {"status": "ok", "message": "Scrape and NLP pipeline completed"}
