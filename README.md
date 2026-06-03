@@ -143,6 +143,6 @@ Scrape → Clean Text → Extract Keywords (spaCy) → Score Sentiment (VADER)
 
 See [.env.example](.env.example) for all available configuration options.
 
-## License
+## 📝 License
 
-MIT
+MIT License - see [LICENSE](LICENSE) for details.
