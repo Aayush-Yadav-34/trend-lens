@@ -31,7 +31,7 @@ async def get_topics(
     db: AsyncSession = Depends(get_db),
 ) -> list[dict]:
     """
-    Get all topic clusters ordered by post_count descending.
+    Get topic clusters from the most recent NLP pipeline run within the specified timeframe.
 
     Returns list of topic dicts with: id, label, post_count, avg_sentiment,
     top_keywords, computed_at.
@@ -39,9 +39,25 @@ async def get_topics(
     try:
         cutoff = datetime.utcnow() - timedelta(hours=hours)
 
+        # Get the latest computed_at timestamp within the cutoff
+        latest_ts_result = await db.execute(
+            select(Topic.computed_at)
+            .where(Topic.computed_at >= cutoff)
+            .order_by(Topic.computed_at.desc())
+            .limit(1)
+        )
+        latest_ts = latest_ts_result.scalar_one_or_none()
+
+        if not latest_ts:
+            return []
+
+        # Return topics from the latest run (within a 10-second window to be safe)
         result = await db.execute(
             select(Topic)
-            .where(Topic.computed_at >= cutoff)
+            .where(
+                Topic.computed_at >= latest_ts - timedelta(seconds=10),
+                Topic.computed_at <= latest_ts + timedelta(seconds=10),
+            )
             .order_by(Topic.post_count.desc())
         )
         topics = result.scalars().all()

@@ -22,10 +22,11 @@ const fetcher = async (url) => {
  * Fetch trending posts with source and time range filters.
  * Revalidates every 5 minutes.
  */
-export function useTrends(source = 'all', hours = 24) {
+export function useTrends(source = 'all', hours = 24, limit = 100) {
   const params = new URLSearchParams();
   if (source !== 'all') params.set('source', source);
   params.set('hours', String(hours));
+  params.set('limit', String(limit));
 
   const { data, error, isLoading, mutate } = useSWR(
     `${API_BASE}/api/trends?${params.toString()}`,
